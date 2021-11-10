@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 import './Home.css';
 import Header from '../../common/header/Header.js';
 import { withStyles } from '@material-ui/core/styles';
 import moviesData from '../../common/movieData';
 import genres from '../../common/genres';
 import artists from '../../common/artists';
+import Details from '../details/Details';
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -79,11 +82,16 @@ class Home extends Component {
         this.setState({ artists: e.target.value });
     }
 
+    movieClickHandler = (movieId) => {
+        ReactDOM.render(<Details movieId={movieId}/>, document.getElementById('root'));
+    }
+
     render() {
         const { classes } = this.props;
         return (
             <div>
                 <Header />
+               
                 <div className={classes.upcomingMoviesHeading}>
                     <span>Upcomming Movies</span>
                 </div>
@@ -100,7 +108,7 @@ class Home extends Component {
                     <div className="left">
                         <GridList cols={4} cellHeight={400} className={classes.gridListMain}>
                             {moviesData.map(movie => (
-                                <GridListTile key={movie.id} className="released-movie-grid-item">
+                                <GridListTile key={movie.id} onClick={() =>  this.movieClickHandler(movie.id)} className="released-movie-grid-item">
                                     <img
                                         src={`${movie.poster_url}?w=164&h=164&fit=crop&auto=format`}
                                         alt={movie.title} />
